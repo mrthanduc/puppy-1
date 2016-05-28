@@ -1,5 +1,7 @@
 # puppy-1
 
+Luu y khi bat dau lam nho tao Branch moi : vi du chuc nang A, chuc nang B ....
+
 File Ignore
 
 # Built application files
