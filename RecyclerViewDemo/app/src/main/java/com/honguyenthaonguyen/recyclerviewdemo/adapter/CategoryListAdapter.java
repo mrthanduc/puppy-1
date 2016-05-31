@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.honguyenthaonguyen.recyclerviewdemo.R;
+import com.honguyenthaonguyen.recyclerviewdemo.productcategorymodel.ProductCategory;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -15,20 +18,22 @@ import java.util.List;
  * Created by NGUYEN on 5/12/2016.
  */
 public class CategoryListAdapter extends Adapter {
-    List<String> mDataset;
+    List<ProductCategory> mDataset;
 
-    public CategoryListAdapter(List<String> mDataset){
+    public CategoryListAdapter(List<ProductCategory> mDataset){
         this.mDataset = mDataset;
     }
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
-        public TextView textView;
+        public TextView textViewCategoryName, textViewProductCategoryQuantity, textViewProductCategoryDescription;
+
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.text_category_name);
-
+            textViewCategoryName = (TextView) itemView.findViewById(R.id.text_category_name);
+            textViewProductCategoryQuantity = (TextView) itemView.findViewById(R.id.textViewProductCategoryQuantity);
+            textViewProductCategoryDescription = (TextView) itemView.findViewById(R.id.textViewProductCategoryDescription);
         }
     }
 
@@ -42,8 +47,9 @@ public class CategoryListAdapter extends Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolder)holder).textView.setText(mDataset.get(position));
-
+        ((ViewHolder)holder).textViewCategoryName.setText(mDataset.get(position).getName());
+        ((ViewHolder)holder).textViewProductCategoryQuantity.setText(mDataset.get(position).getCount() + "");
+        ((ViewHolder)holder).textViewProductCategoryDescription.setText(mDataset.get(position).getDescription());
     }
 
     @Override

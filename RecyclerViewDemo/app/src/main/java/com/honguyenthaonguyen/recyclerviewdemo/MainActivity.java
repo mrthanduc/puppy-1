@@ -4,12 +4,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 
 import com.honguyenthaonguyen.recyclerviewdemo.adapter.CategoryListAdapter;
+import com.honguyenthaonguyen.recyclerviewdemo.productcategorymodel.ProductCategoryResponse;
+import com.honguyenthaonguyen.recyclerviewdemo.service.WooCommerceService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,14 +37,23 @@ public class MainActivity extends AppCompatActivity {
         // Create layout manager
         recyclerViewLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        List<String> list = new ArrayList<>();
-        for(int i=1; i <=1000;i++)
-        {
-            list.add("Product " + i);
-        }
+        // Get Data
+        WooCommerceService service = ServiceGenerator.createService(WooCommerceService.class);
+        Call<ProductCategoryResponse> productCategoryResponseCall = service.getProductCategoryList();
+        productCategoryResponseCall.enqueue(new Callback<ProductCategoryResponse>() {
+            @Override
+            public void onResponse(Call<ProductCategoryResponse> call, Response<ProductCategoryResponse> response) {
+                ProductCategoryResponse productCategoryResponse = response.body();
+                Log.d("Debug", String.valueOf(productCategoryResponse.getProductCategories().size()));
+                recyclerViewAdapter = new CategoryListAdapter(productCategoryResponse.getProductCategories());
+                recyclerView.setAdapter(recyclerViewAdapter);
+            }
 
-        recyclerViewAdapter = new CategoryListAdapter(list);
-        recyclerView.setAdapter(recyclerViewAdapter);
+            @Override
+            public void onFailure(Call<ProductCategoryResponse> call, Throwable t) {
+                Log.e("Error", t.getMessage());
+            }
+        });
 
     }
 }
